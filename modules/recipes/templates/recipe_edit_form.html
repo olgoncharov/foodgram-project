@@ -1,0 +1,38 @@
+{% extends "base/form.html" %}
+
+{% block nav %}
+{% include 'base/nav.html' with active_nav_item='new_recipe'%}
+{% endblock %}
+
+{% block title %}
+  {% if form.instance.pk is None %}
+    Создание рецепта
+  {% else %}
+    Редактирование рецепта
+  {% endif %}
+{% endblock %}
+
+{% block enctype %}enctype="multipart/form-data"{% endblock %}
+
+{% block buttons %}
+  {% if form.instance.pk is None %}
+  <button type="submit" class="button button_style_blue">Создать рецепт</button>
+  {% else %}
+  <button class="button button_style_blue">Сохранить</button>
+  <button formaction="{% url 'recipe_delete' form.instance.pk %}" style="margin-left: 2.5em"  class="form__ingredient-link">Удалить</button>
+  {% endif %}
+{% endblock %}
+
+{% block extrafields %}
+{% if field.name == 'tags' %}
+{% include 'ingredients_formset.html' with formset=ingredients_formset %}
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% load static %}
+<script src="{% static '/js/components/Header.js' %}"></script>
+<script src="{% static '/js/utils/debouncing.js' %}"></script>
+<script src="{% static '/js/api/Api.js' %}"></script>
+<script src="{% static 'formRecipe.js' %}"></script>
+{% endblock %}

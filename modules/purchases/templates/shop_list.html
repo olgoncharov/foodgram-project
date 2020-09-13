@@ -1,0 +1,42 @@
+{% extends 'base/main.html' %}
+
+{% block static %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'pages/shopList.css' %}">
+{% endblock %}
+
+{% block nav %}
+{% include 'base/nav.html' with active_nav_item='shop_list'%}
+{% endblock %}
+
+{% block title %}Список покупок{% endblock %}
+
+{% block content %}
+  <div class="main__header">
+    <h1 class="main__title">Список покупок</h1>
+  </div>
+
+  <div class="card-list card-list_column">
+    <ul class="shopping-list">
+      {% for item in object_list %}
+        <li class="shopping-list__item" data-id="{{ item.recipe.pk }}">
+        <div class="recipe recipe_reverse">
+          {% load thumbnail %}
+          {% thumbnail item.recipe.picture "74x74" as im %}
+          <img src="{{ im.url }}" class="recipe__image recipe__image_big">
+          {% endthumbnail %}
+          <h3 class="recipe__title">{{ item.recipe.title }}</h3>
+          <p class="recipe__text"><span class="icon-time"></span> {{ item.recipe.cooking_time }} мин.</p>
+        </div>
+        <form action="{% url 'shoplist_delete' item.pk%}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="shopping-list__button link">Удалить</button>
+        </form>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if object_list %}
+    <a href="{% url 'shoplist_download' %}" class="button button_style_blue">Скачать список</a>
+    {% endif %}
+  </div>
+{% endblock %}

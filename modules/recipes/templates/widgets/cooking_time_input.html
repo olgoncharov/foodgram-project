@@ -1,0 +1,4 @@
+<div class="form__field-group form__field-group_time">
+  <input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
+  <label for="id_time" class="form__label">минут</label>
+</div>

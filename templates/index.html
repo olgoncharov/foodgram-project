@@ -1,8 +1,17 @@
-{% extends 'base/main.html' %}
-
-{% block static %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% extends 'recipes_list.html' %}
+{% block title %}Рецепты{% endblock %}
+{% block nav %}
+{% include 'base/nav.html' with active_nav_item='recipes'%}
 {% endblock %}
+{% block page_url %}{% url 'index' %}{% endblock %}
 
-{% block content %}{% endblock %}
+{% block scripts %}
+  {% load static %}
+  <script src="{% static 'js/components/MainCards.js' %}"></script>
+  <script src="{% static 'js/components/Purchpurachases.js' %}"></script>
+  <script src="{% static 'js/components/Favorites.js' %}"></script>
+  <script src="{% static 'js/components/CardList.js' %}"></script>
+  <script src="{% static 'js/components/Header.js' %}"></script>
+  <script src="{% static 'js/api/Api.js' %}"></script>
+  <script src="{% static 'indexAuth.js' %}"></script>
+{% endblock %}

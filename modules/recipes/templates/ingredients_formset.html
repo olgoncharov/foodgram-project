@@ -1,0 +1,31 @@
+<div class="form__group">
+  <label for="nameIngredient" class="form__label">Ингредиенты</label>
+  <div class="form__field-group">
+    <div class="form__field-group-ingredientes">
+      <div class="form__dropdown">
+        <input type="text" id="nameIngredient" class="form__input">
+        <div class="form__dropdown-items"></div>
+      </div>
+      <input type="number" id="cantidad" class="form__input" min="0">
+      <label for="cantidad" class="form__label" id="cantidadVal">шт.</label>
+    </div>
+    {% if ingredients_errors %}
+      {% for error in ingredients_errors %}
+        <span class="form__error">{{ error }}</span>
+      {% endfor %}
+    {% endif %}
+    {{ formset.management_form }}
+    {% for form in formset %}
+      {% if form.instance.pk %}
+    <div class="form__field-item-ingredient" id="ing{{ forloop.counter }}">
+      <span>{{ form.instance }}</span>
+      <span class="form__field-item-delete"></span>
+      {% for field in form %}
+        {{ field }}
+      {% endfor %}
+    </div>
+      {% endif %}
+    {% endfor %}
+    <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
+  </div>
+</div>

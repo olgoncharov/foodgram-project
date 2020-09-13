@@ -11,6 +11,18 @@
     grid-row: auto;
     grid-column: 1/-1;
 }
+button.form__ingredient-link{
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 20px;
+    color: #858383;
+    cursor: pointer;
+}
 .form__ingredient-link:before {
     content: '';
     position: absolute;

@@ -1,0 +1,16 @@
+{% extends 'recipes_list.html' %}
+{% block nav %}
+{% include 'base/nav.html' with active_nav_item='favorite'%}
+{% endblock %}
+{% block title %}Избранное{% endblock %}
+{% block page_url %}{% url 'favorite' %}{% endblock %}
+{% block scripts %}
+{% load static %}
+  <script src="{% static 'js/components/MainCards.js' %}"></script>
+  <script src="{% static 'js/components/Purchpurachases.js' %}"></script>
+  <script src="{% static 'js/components/Favorites.js' %}"></script>
+  <script src="{% static 'js/components/CardList.js' %}"></script>
+  <script src="{% static 'js/components/Header.js' %}"></script>
+  <script src="{% static 'js/api/Api.js' %}"></script>
+  <script src="{% static 'favorite.js' %}"></script>
+{% endblock %}

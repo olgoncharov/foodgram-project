@@ -11,7 +11,7 @@
   <h1 class="main__title">{% block title %}{% endblock %}</h1>
 </div>
 <div class="form-container">
-  <form class="form" method="post" {% block action %}{% endblock %}>
+  <form class="form" method="post" {% block action %}{% endblock %}{% block enctype%}{% endblock %}>
     {% block form_info %}
     {% endblock %}
     {% csrf_token %}
@@ -19,7 +19,7 @@
     <div class="form__group">
       <label for="{{ field.id_for_label }}" class="form__label">{{ field.label }}</label>
       <div class="form__field-group">
-        {{ field | add_class:"form__input" }}
+        {{ field | add_class_for_input }}
         {% if field.errors %}
         <span class="form__error">{{ field.errors }}</span>
         {% endif %}
@@ -28,9 +28,10 @@
         {% endif %}
       </div>
     </div>
+    {% block extrafields %}{% endblock %}
     {% endfor %}
-    {% if form.non_field_errors %}
-    <span class="form__error">{{ form.non_field_errors }}</span>
+    {% if form.errors.non_field_errors %}
+    <span class="form__error">{{ form.errors.non_field_errors }}</span>
     {% endif %}
     <div class="form__footer">
       {% block buttons %}{% endblock %}

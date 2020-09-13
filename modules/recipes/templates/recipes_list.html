@@ -1,0 +1,72 @@
+{% extends 'base/main.html' %}
+
+{% block static %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock %}
+
+{% block content %}
+{% load recipe_page_filters %}
+
+  <div class="main__header">
+    <h1 class="main__title">{% block title %}{% endblock %}</h1>
+    <ul class="tags">
+      {% for tag in available_tags %}
+      <li class="tags__item">
+        <a id="{{ tag.field }}"
+           class="tags__checkbox tags__checkbox_style_{{ tag.color }}
+           {% if tag.field in selected_tags or not selected_tags %}tags__checkbox_active{% else %}tags__chekbox{% endif %}"
+           {% with tags_parameter=selected_tags|filtering_tags_parameter:tag.field %}
+           href="{% block page_url %}{% endblock %}{% if tags_parameter %}?tags={{ tags_parameter }}{% endif %}">
+           {% endwith %}
+        </a>
+        <span class="tags__label">{{ tag.title }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% block extra_content %}{% endblock %}
+  <div class="card-list">
+  {% for recipe in page_obj %}
+    <div class="card" data-id="{{ recipe.pk }}">
+      {% load thumbnail %}
+      {% thumbnail recipe.picture "360x240" as im %}
+      <a href="{% url 'recipe' recipe.pk %}" class="link"><img src="{{ im.url }}" class="card__image"></a>
+      {% endthumbnail %}
+      <div class="card__body">
+        <a class="card__title link" href="{% url 'recipe' recipe.pk %}" >{{ recipe.title }}</a>
+        <ul class="card__items">
+          {% for tag in available_tags %}
+            {% if recipe|get_attribute:tag.field %}
+            <li class="card__item"><span class="badge badge_style_{{ tag.color }}">{{ tag.title }}</span></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+        <div class="card__items card__items_column">
+          <p class="card__text"><span class="icon-time"></span> {{ recipe.cooking_time }} мин.</p>
+          <p class="card__text"><span class="icon-user"></span> <a href="{% url 'author' recipe.author.pk %}" style="color: black">{{ recipe.author.get_full_name }}</a></p>
+        </div>
+      </div>
+      {% if user.is_authenticated %}
+      <div class="card__footer">
+        {% if recipe.is_purchase %}
+        <button class="button button_style_light-blue-outline" name="purchpurchases"><span class="icon-check button__icon"></span> Рецепт добавлен</button>
+        {% else %}
+        <button class="button button_style_light-blue" name="purchpurchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
+        {% endif %}
+        {% if recipe.author != user  %}
+        {% if recipe.is_favorite%}
+        <button class="button button_style_none" name="favorites"><span class="icon-favorite icon-favorite_active"></span></button>
+        {% else %}
+        <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite"></span></button>
+        {% endif %}
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+  </div>
+  {% if page_obj.has_other_pages %}
+    {% include "paginator.html" with items=page_obj paginator=paginator %}
+  {% endif %}
+{% endblock %}

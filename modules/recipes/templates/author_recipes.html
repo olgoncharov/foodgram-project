@@ -1,0 +1,30 @@
+{% extends 'recipes_list.html' %}
+{% block nav %}
+{% include 'base/nav.html' with active_nav_item='recipes'%}
+{% endblock %}
+{% block title %}{{ author.get_full_name }}{% endblock %}
+{% block page_url %}{% url 'author' author.pk%}{% endblock %}
+{% block extra_content %}
+  <div class="author-subscribe" data-author="{{ author.pk }}">
+  {% if subscribed %}
+    <p style="padding: 0 0 2em 0;"><button class="button button_style_light-blue button_size_auto button_style_light-blue-outline" name="subscribe">
+        Отписаться от автора
+    </button></p>
+  {% else %}
+    <p style="padding: 0 0 2em 0;"><button class="button button_style_light-blue button_size_auto" name="subscribe" data-out>Подписаться на автора</button></p>
+  {% endif %}
+  </div>
+{% endblock %}
+{% block scripts %}
+  {% load static %}
+  <script src="{% static 'js/components/MainCards.js' %}"></script>
+  <script src="{% static 'js/components/Subscribe.js' %}"></script>
+  <script src="{% static 'js/components/Purchpurachases.js' %}"></script>
+  <script src="{% static 'js/components/Favorites.js' %}"></script>
+  <script src="{% static 'js/components/CardList.js' %}"></script>
+  <script src="{% static 'js/components/Header.js' %}"></script>
+  <script src="{% static 'js/components/AuthorRecipe.js' %}"></script>
+  <script src="{% static 'js/api/Api.js' %}"></script>
+  <script src="{% static 'indexAuth.js' %}"></script>
+  <script src="{% static 'authorRecipe.js' %}"></script>
+{% endblock %}

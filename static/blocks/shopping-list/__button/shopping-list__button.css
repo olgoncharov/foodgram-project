@@ -6,3 +6,15 @@
     line-height: 17px;
     color: #858383;
 }
+button.shopping-list__button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #858383;
+    cursor: pointer;
+}

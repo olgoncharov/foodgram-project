@@ -8,10 +8,13 @@
   {% block static %}{% endblock %}
 </head>
 <body class="body">
-  {% include 'base/header.html' %}
+  {% block nav %}{% include 'base/nav.html'%}{% endblock %}
   <main class="main container">
     {% block content %}{% endblock %}
   </main>
   {% include 'base/footer.html' %}
+  {% load static %}
+  <script src="{% static '/js/config/config.js' %}"></script>
+  {% block scripts %}{% endblock %}
 </body>
 </html>

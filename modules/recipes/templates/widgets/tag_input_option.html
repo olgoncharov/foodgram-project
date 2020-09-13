@@ -1,0 +1,4 @@
+<div class="tags__item">
+  <input type="checkbox" name="{{ widget.name }}" id="{{ widget.attrs.id }}" class="tags__checkbox tags__checkbox_style_{{ widget.color }}" {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %} {% include "django/forms/widgets/attrs.html" %}>
+  <label {% if widget.attrs.id %} for="{{ widget.attrs.id }}"{% endif %} class="tags__label">{{ widget.label }}</label>
+</div>

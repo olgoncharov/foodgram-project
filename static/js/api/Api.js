@@ -17,13 +17,14 @@ class Api {
       })
   }
   addPurchases (id) {
-    return fetch(`/purchases`, {
+    return fetch(`/api/v1/purchases/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
       },
       body: JSON.stringify({
-        id: id
+        recipe: id
       })
     })
       .then( e => {
@@ -34,27 +35,29 @@ class Api {
       })
   }
   removePurchases (id){
-    return fetch(`/purchases/${id}`, {
+    return fetch(`/api/v1/purchases/${id}/`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
       }
     })
       .then( e => {
           if(e.ok) {
-              return e.json()
+              return {}
           }
           return Promise.reject(e.statusText)
       })
   }
   addSubscriptions(id) {
-    return fetch(`/subscriptions`, {
+    return fetch(`/api/v1/subscriptions/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
       },
       body: JSON.stringify({
-        id: id
+        following: id
       })
     })
       .then( e => {
@@ -65,27 +68,29 @@ class Api {
       })
   }
   removeSubscriptions (id) {
-    return fetch(`/subscriptions/${id}`, {
+    return fetch(`/api/v1/subscriptions/${id}/`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
       }
     })
       .then( e => {
           if(e.ok) {
-              return e.json()
+              return {}
           }
           return Promise.reject(e.statusText)
       })
   }
   addFavorites (id)  {
-    return fetch(`/favorites`, {
+    return fetch(`/api/v1/favorites/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
       },
       body: JSON.stringify({
-        id: id
+        recipe: id
       })
     })
         .then( e => {
@@ -96,21 +101,22 @@ class Api {
         })
   }
   removeFavorites (id) {
-    return fetch(`/favorites/${id}`, {
+    return fetch(`/api/v1/favorites/${id}/`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
       }
     })
         .then( e => {
             if(e.ok) {
-                return e.json()
+                return {}
             }
             return Promise.reject(e.statusText)
         })
   }
     getIngredients  (text)  {
-        return fetch(`/ingredients?query=${text}`, {
+        return fetch(`/api/v1/foodstuff?search=${text}`, {
             headers: {
                 'Content-Type': 'application/json'
             }

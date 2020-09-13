@@ -23,7 +23,7 @@ class SingleCard extends MainCards{
         }
     }
     _eventSubscribe  (target)  {
-        const cardId = target.closest(this.card).getAttribute('data-id');
+        const cardId = target.closest(this.card).getAttribute('data-author');
         if(target.hasAttribute('data-out')) {
             this.button.subscribe.addSubscribe(target,cardId)
         } else {

@@ -1,0 +1,69 @@
+{% extends 'base/main.html' %}
+
+{% block static %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'pages/myFollow.css' %}">
+{% endblock %}
+
+{% block nav %}
+{% include 'base/nav.html' with active_nav_item='follow'%}
+{% endblock %}
+
+{% block title %}Мои подписки{% endblock %}
+
+{% block content %}
+  {% load recipe_page_filters %}
+  <div class="main__header">
+    <h1 class="main__title">Мои подписки</h1>
+  </div>
+  <div class="card-list">
+  {% for subscription in page_obj %}
+    <div class="card-user" data-author="{{ subscription.following.pk }}">
+        <div class="card-user__header">
+            <h2 class="card-user__title">{{ subscription.following.get_full_name }}</h2>
+        </div>
+        <div class="card-user__body">
+          <ul class="card-user__items">
+          {% with current_recipes=recipes|get_by_key:subscription.following %}
+          {% for recipe in current_recipes|slice:":3" %}
+            <li class="card-user__item">
+              <div class="recipe">
+                {% load thumbnail %}
+                {% thumbnail recipe.picture "72x72" as im %}
+                <img src="{{ im.url }}" class="recipe__image">
+                {% endthumbnail %}
+                <h3 class="recipe__title">{{ recipe.title }}</h3>
+                <p class="recipe__text"><span class="icon-time"></span> {{ recipe.cooking_time }} мин.</p>
+              </div>
+            </li>
+          {% endfor %}
+            <li class="card-user__item">
+            {% with count_of_recipes=current_recipes|length %}
+              {% if count_of_recipes > 3 %}
+              <a href="{% url 'author' subscription.following.pk %}" class="card-user__link link">Еще {{ count_of_recipes|add:"-3" }} рецептов...</a>
+              {% endif %}
+            {% endwith %}
+            </li>
+          {% endwith %}
+          </ul>
+        </div>
+        <div class="card-user__footer">
+            <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
+        </div>
+    </div>
+  {% endfor %}
+  </div>
+  {% if page_obj.has_other_pages %}
+    {% include "paginator.html" with items=page_obj paginator=paginator %}
+  {% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% load static %}
+<script src="{% static 'js/components/MainCards.js' %}"></script>
+<script src="{% static 'js/components/MyFollow.js' %}"></script>
+<script src="{% static 'js/components/Subscribe.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'myFollow.js' %}"></script>
+{% endblock %}
