@@ -15,7 +15,7 @@ def add_class_for_input(field):
     if isinstance(field.field.widget, Textarea):
         css = 'form__textarea'
     elif isinstance(field.field.widget, ClearableFileInput):
-        css = 'form__input'
+        css = ''
 
     return field.as_widget(attrs={"class": css})
 
