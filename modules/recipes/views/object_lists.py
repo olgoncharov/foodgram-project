@@ -20,7 +20,7 @@ class BaseRecipeListView(generic.ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        queryset = Recipe.objects.all().get_recipes_for_user(self.request.user)
+        queryset = Recipe.objects.get_recipes_for_user(self.request.user)
 
         selected_tags = self.get_selected_tags()
         if selected_tags:
