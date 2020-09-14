@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: foodgram-db
+    image: postgres:12.4
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - backend
+    env_file:
+      - docker/.env
+
+  back:
+    container_name: foodgram-back
+    build: .
+    restart: always
+    volumes:
+      - django_static:/code/static/
+      - django_media:/code/media/
+    expose:
+      - 8000
+    networks:
+      - backend
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    env_file:
+      - docker/.env
+
+  proxy:
+    container_name: foodgram-proxy
+    build: docker/nginx
+    restart: always
+    volumes:
+      - django_static:/static/
+      - django_media:/media/
+    ports:
+      - 8000:80
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  django_static:
+  django_media:
+  postgres_data:
