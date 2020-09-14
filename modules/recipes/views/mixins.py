@@ -4,8 +4,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import ModelFormMixin
 
-from modules.recipes.forms import RecipeForm, RecipeIngredientForm, \
-    BaseRecipeIngredientFormSet
+from modules.recipes.forms import (RecipeForm, RecipeIngredientForm,
+                                   BaseRecipeIngredientFormSet)
 from modules.recipes.models import Recipe, RecipeIngredient
 
 
@@ -81,10 +81,9 @@ class RecipeModelFormMixin(ModelFormMixin):
         пользователем в форме редактирования.
         """
 
-        _ = (self.object.ingredient_details
-             .exclude(pk__in=[form.instance.pk for form in formset])
-             .delete()
-             )
+        self.object.ingredient_details.exclude(
+            pk__in=[form.instance.pk for form in formset]
+        ).delete()
 
     def form_valid(self, form):
         """

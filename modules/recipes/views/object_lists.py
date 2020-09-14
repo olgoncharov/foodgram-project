@@ -20,14 +20,12 @@ class BaseRecipeListView(generic.ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        user = self.request.user
-        if user.is_authenticated:
-            queryset = Recipe.objects.all().get_recipes_for_auth_user(user)
-        else:
-            queryset = super().get_queryset()
+        queryset = Recipe.objects.all().get_recipes_for_user(self.request.user)
 
         selected_tags = self.get_selected_tags()
         if selected_tags:
+            # сложное выражение из-за того, что требуется аккумулировать
+            # фильтры через оператор ИЛИ, а не И
             return queryset.filter(
                 reduce(lambda x, y: x | y,
                        [Q(**{tag: True}) for tag in selected_tags])
@@ -49,7 +47,7 @@ class BaseRecipeListView(generic.ListView):
         if tags_from_query:
             tags_list = tags_from_query.split(',')
 
-        if len(tags_list) == len(settings.RECIPE_TAGS):
+        if set(tags_list) == {tag['field'] for tag in settings.RECIPE_TAGS}:
             # пользователь включил все возможные теги, поэтому обнуляем список
             # выбранных тегов, чтобы отключить фильтры
             return []
@@ -92,8 +90,11 @@ class AuthorRecipeListView(BaseRecipeListView):
         context = super().get_context_data(object_list=object_list, **kwargs)
         author = get_object_or_404(User, pk=self.kwargs['author_pk'])
         context['author'] = author
-        context['subscribed'] = \
-            author.followers.filter(follower=self.request.user).exists()
+        context['subscribed'] = (
+            author.followers.filter(
+                follower=self.request.user
+            ).exists()
+        )
 
         return context
 

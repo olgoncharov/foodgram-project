@@ -16,10 +16,7 @@ class ShopListView(LoginRequiredMixin, ListView):
     template_name = 'shop_list.html'
 
     def get_queryset(self):
-        return (self.request.user
-                .purchase_recipes
-                .select_related('recipe')
-                .all())
+        return self.request.user.purchase_recipes.select_related('recipe').all()
 
 
 class DeletePurchaseRecipeView(DeleteView):

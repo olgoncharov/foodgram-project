@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import AuthorRecipeListView, CreateRecipeView, DeleteRecipeView,\
-    FavoriteListView, FollowListView, IndexView, RecipeDetailView, \
-    UpdateRecipeView
+from .views import (AuthorRecipeListView, CreateRecipeView, DeleteRecipeView,
+                    FavoriteListView, FollowListView, IndexView,
+                    RecipeDetailView, UpdateRecipeView)
 
 
 urlpatterns = [

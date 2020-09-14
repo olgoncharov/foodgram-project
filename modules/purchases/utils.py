@@ -1,6 +1,5 @@
 from django.db.models import Sum, F
 
-from .models import PurchaseRecipe
 from modules.recipes.models import RecipeIngredient
 
 
@@ -21,12 +20,19 @@ def get_detailed_shop_list(user):
     Картофель (г) — 1000
     """
 
-    ingredients = (RecipeIngredient.objects
-                   .select_related('foodstuff', 'foodstuff__dimension')
-                   .filter(recipe__purchases__user=user)
-                   .values(name=F('foodstuff__name'),
-                            dimension=F('foodstuff__dimension__name'))
-                   .annotate(total_quantity=Sum('quantity')))
+    ingredients = (
+        RecipeIngredient.objects.select_related(
+            'foodstuff',
+            'foodstuff__dimension'
+        ).filter(
+            recipe__purchases__user=user
+        ).values(
+            name=F('foodstuff__name'),
+            dimension=F('foodstuff__dimension__name')
+        ).annotate(
+            total_quantity=Sum('quantity')
+        )
+    )
 
     return '\n'.join([
         f'{item["name"]} ({item["dimension"]}) - {item["total_quantity"]}'

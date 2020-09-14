@@ -8,8 +8,8 @@ from rest_framework.mixins import CreateModelMixin, DestroyModelMixin
 from modules.purchases.models import PurchaseRecipe
 from modules.recipes.models import FavoriteRecipe, Foodstuff
 from modules.users.models import Subscription
-from .serializers import FavoriteRecipeSerializer, FoodstuffSerializer, \
-    SubscriptionSerializer, PurchaseRecipeSerializer
+from .serializers import (FavoriteRecipeSerializer, FoodstuffSerializer,
+                          SubscriptionSerializer, PurchaseRecipeSerializer)
 
 
 class FoodstuffListView(ListAPIView):
