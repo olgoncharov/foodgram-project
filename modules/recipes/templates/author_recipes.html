@@ -5,7 +5,7 @@
 {% block title %}{{ author.get_full_name }}{% endblock %}
 {% block page_url %}{% url 'author' author.pk%}{% endblock %}
 {% block extra_content %}
-  {% if user != author %}
+  {% if user.is_authenticated and user != author %}
   <div class="author-subscribe" data-author="{{ author.pk }}">
   {% if subscribed %}
     <p style="padding: 0 0 2em 0;"><button class="button button_style_light-blue button_size_auto button_style_light-blue-outline" name="subscribe">
