@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo "Applying migrations"
-django-admin migrate
-
 echo "Collect static"
 django-admin collectstatic --noinput
 
