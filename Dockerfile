@@ -1,15 +1,14 @@
 FROM python:3.8.5
 
 RUN apt update -y && \
-    mkdir /code /helpers
+    mkdir /code
 
-COPY docker/entrypoint.py /helpers
-COPY docker/docker-entrypoint.sh /helpers
-RUN chmod +x /helpers/docker-entrypoint.sh
+COPY docker/entrypoint.py /code
+COPY docker/docker-entrypoint.sh /code
+RUN chmod +x /code/docker-entrypoint.sh
 
 ENV PYTHONPATH "${PYTHONPATH}:/code/"
 ENV DJANGO_SETTINGS_MODULE=conf.settings
-ENV STATIC_ROOT=/code/static
 
 WORKDIR code
 
@@ -22,4 +21,4 @@ COPY requirements.txt ./
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["/helpers/docker-entrypoint.sh"]
+ENTRYPOINT ["/code/docker-entrypoint.sh"]
