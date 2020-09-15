@@ -90,11 +90,14 @@ class AuthorRecipeListView(BaseRecipeListView):
         context = super().get_context_data(object_list=object_list, **kwargs)
         author = get_object_or_404(User, pk=self.kwargs['author_pk'])
         context['author'] = author
-        context['subscribed'] = (
-            author.followers.filter(
-                follower=self.request.user
-            ).exists()
-        )
+        if self.request.user.is_authenticated:
+            context['subscribed'] = (
+                author.followers.filter(
+                    follower=self.request.user
+                ).exists()
+            )
+        else:
+            context['subscribed'] = False
 
         return context
 
@@ -106,8 +109,11 @@ class FollowListView(LoginRequiredMixin, generic.ListView):
     template_name = 'my_follow.html'
 
     def get_queryset(self):
-        return (self.request.user.subscriptions
-                .select_related('following').all())
+        return (
+            self.request.user.subscriptions.select_related(
+                'following'
+            ).all()
+        )
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
