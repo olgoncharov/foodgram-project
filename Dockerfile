@@ -3,7 +3,7 @@ FROM python:3.8.5
 RUN apt update -y && \
     mkdir /code /helpers
 
-COPY docker/create_or_update_superuser.py /helpers
+COPY docker/entrypoint.py /helpers
 COPY docker/docker-entrypoint.sh /helpers
 RUN chmod +x /helpers/docker-entrypoint.sh
 

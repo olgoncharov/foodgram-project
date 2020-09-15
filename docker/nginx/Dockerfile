@@ -1,3 +1,3 @@
-FROM nginx:1.18.0
-COPY nginx.conf /etc/nginx/nginx.conf
+FROM nginx:1.19.0
+COPY default.conf.template /etc/nginx/templates/
 RUN mkdir /static/

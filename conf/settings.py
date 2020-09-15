@@ -9,7 +9,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.environ.get('HOST_IP')]
+
+DOMAIN_NAME = os.environ.get('HOST_DOMAIN')
+if DOMAIN_NAME:
+    ALLOWED_HOSTS += [
+        DOMAIN_NAME,
+        f'www.{DOMAIN_NAME}'
+    ]
 
 APPS = [
     'modules.users',
@@ -108,9 +115,8 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
