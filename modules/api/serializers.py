@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.validators import UniqueTogetherValidator
 
 from modules.purchases.models import PurchaseRecipe
 from modules.recipes.models import FavoriteRecipe, Foodstuff
@@ -37,15 +38,16 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
         fields = '__all__'
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Subscription.objects.all(),
+                fields=['follower', 'following']
+            )
+        ]
 
     def to_internal_value(self, data):
         data['follower'] = self.context['request'].user.pk
         return super().to_internal_value(data)
-
-    def validate(self, data):
-        if data['follower'] == data['following']:
-            raise ValidationError('Невозможно подписаться на самого себя')
-        return data
 
 
 class PurchaseRecipeSerializer(serializers.ModelSerializer):
